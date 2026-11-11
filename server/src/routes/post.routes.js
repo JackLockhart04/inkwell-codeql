@@ -1,11 +1,13 @@
 import { Router } from "express";
+import rateLimit from "express-rate-limit";
 import { PostService } from "../services/post.service.js";
 import { requireAuth } from "../middleware/auth.middleware.js";
 
 const router = Router();
 const MAX_PAGE_SIZE = 100;
+const postRateLimiter = rateLimit({ windowMs: 60 * 1000, max: 10 });
 
-router.post("/posts", requireAuth, async (req, res, next) => {
+router.post("/posts", postRateLimiter, requireAuth, async (req, res, next) => {
   try {
     // Never trust client-supplied identity fields — derive
     // authorId from the authenticated request, not the request body.
