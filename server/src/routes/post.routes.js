@@ -46,7 +46,7 @@ router.get("/posts", async (req, res, next) => {
 });
 
 // server/src/routes/post.routes.js — AFTER (fixed)
-router.delete("/posts/:id", requireAuth, async (req, res, next) => {
+router.delete("/posts/:id", postRateLimiter, requireAuth, async (req, res, next) => {
   try {
     const post = await PostService.getById(req.params.id);
     if (!post) return res.status(404).json({ error: { code: "NOT_FOUND" } });
