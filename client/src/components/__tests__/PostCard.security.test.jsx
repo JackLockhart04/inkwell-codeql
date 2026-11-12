@@ -18,7 +18,7 @@ test("renders post body as text, never as executable HTML", () => {
 
   render(<PostCard post={maliciousPost} />);
 
-  expect(screen.getByText(/<script>/)).toBeInTheDocument();
+  expect(screen.getByText("<script>window.__xss = true;</script>")).toBeInTheDocument();
   // rendered as literal text
   expect(window.__xss).toBeUndefined(); // never executed
 });
